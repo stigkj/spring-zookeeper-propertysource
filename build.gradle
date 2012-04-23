@@ -1,0 +1,18 @@
+apply plugin: 'java'
+
+ext.springVersion = '3.1.1.RELEASE'
+ext.curatorVersion = '1.1.8'
+ext.spockVersion = '0.6-groovy-1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+    compile "org.springframework:spring-core:${springVersion}"
+    compile "com.netflix.curator:curator-client:${curatorVersion}"
+    compile "com.netflix.curator:curator-framework:${curatorVersion}"
+
+    testCompile "org.spockframework:spock-core:${spockVersion}"
+    testCompile "com.netflix.curator:curator-test:${curatorVersion}"
+}
