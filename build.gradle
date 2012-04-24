@@ -10,6 +10,7 @@ repositories {
 
 dependencies {
     compile "org.springframework:spring-core:${springVersion}"
+    compile "org.springframework:spring-context:${springVersion}"
     compile "com.netflix.curator:curator-client:${curatorVersion}"
     compile "com.netflix.curator:curator-framework:${curatorVersion}"
 
