@@ -7,6 +7,7 @@ import com.netflix.curator.test.TestingServer
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer
 import spock.lang.Specification
+import spock.lang.Shared
 
 /**
  * Unit test of {@link ZookeeperPropertySource}
@@ -14,17 +15,20 @@ import spock.lang.Specification
  * @author Stig Kleppe-Jorgensen, 2012.04.23
  */
 class ZookeeperPropertySourceTest extends Specification {
-    TestingServer server
+    @Shared
+    TestingServer server = new TestingServer()
+    @Shared
     CuratorFramework client
+
     AnnotationConfigApplicationContext context
 
-    def setup() {
-        server = new TestingServer()
-
+    def setupSpec() {
         client = CuratorFrameworkFactory.newClient(server.connectString, new RetryOneTime(1))
         client.start()
         client.create().forPath('/test', 'value'.bytes)
+    }
 
+    def setup() {
         System.setProperty(ZookeeperPropertySource.ZOOKEEPER_URL_ENV_KEY, server.connectString)
 
         context = new AnnotationConfigApplicationContext()
@@ -53,7 +57,7 @@ class ZookeeperPropertySourceTest extends Specification {
         bean.getValueFromEnvironment() == 'value'
     }
 
-    def cleanup() {
+    def cleanupSpec() {
         client?.close()
         server?.stop()
     }
